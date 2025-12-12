@@ -7,6 +7,10 @@ import path, { dirname } from "path";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import MongoStore from "connect-mongo";
+import dotenv from "dotenv";
+dotenv.config();
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __direname = dirname(__filename)
 
@@ -14,7 +18,7 @@ const __direname = dirname(__filename)
 // start:
 const app = express();
 // port:
-const PORT = 5000;
+const PORT = process.env.PORT;
 
 // Middleware:
 app.use(express.json());
@@ -28,9 +32,9 @@ mongoose.connect("mongodb://localhost:27017/to-do-list")
 .catch((error)=>{console.log(`Error: ${error}`)});
 
 // sessions & cookies:
-app.use(cookieParser("mohammadev71"));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
-   secret: "mohammadev71",
+   secret: process.env.SESSION_SECRET,
    saveUninitialized: false,
    resave: false,
    cookie:{
